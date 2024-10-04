@@ -16,10 +16,9 @@ class LoadingButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: context.width-100,
+      width: context.width - 100,
       child: ElevatedButton(
-
-          onPressed: onPressed,
+          onPressed: loading ? null : onPressed,
           child: loading ? const CupertinoActivityIndicator() : Text(text)),
     );
   }

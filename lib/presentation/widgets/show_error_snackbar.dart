@@ -8,7 +8,7 @@ showErrorSnackBar(BuildContext context, String message) {
       backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       behavior: SnackBarBehavior.floating,
       margin: EdgeInsets.only(
-          bottom: MediaQuery.of(context).size.height - 200,
+          bottom: MediaQuery.of(context).size.height - 150,
           right: 20,
           left: 20),
       content: SizedBox(

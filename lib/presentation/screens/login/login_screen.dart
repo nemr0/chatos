@@ -1,8 +1,9 @@
-import 'package:chatos/business/login_cubit.dart';
+import 'package:chatos/business/auth_cubit.dart';
 import 'package:chatos/generated/app_assets.dart';
 import 'package:chatos/presentation/helpers/context_extension.dart';
 import 'package:chatos/presentation/helpers/validators/email_validator.dart';
 import 'package:chatos/presentation/helpers/validators/password_validator.dart';
+import 'package:chatos/presentation/screens/home/home_screen.dart';
 import 'package:chatos/presentation/widgets/login_widgets/custom_text_field.dart';
 import 'package:chatos/presentation/widgets/login_widgets/loading_button.dart';
 import 'package:chatos/presentation/widgets/login_widgets/logo.dart';
@@ -40,29 +41,30 @@ class _LoginScreenState extends State<LoginScreen> {
 
   onLogin() {
     if (formKey.currentState!.validate()) {
-      LoginCubit.get(context)
+      AuthCubit.get(context)
           .loginOrRegister(emailController.text, passwordController.text);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LoginCubit, LoginState>(
+    return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
-        if(state is LoginErrorState){
+        if(state is AuthErrorState){
           showErrorSnackBar(context,state.message);
         }
-        if(state is LoginSuccessState){
-          //TODO: Goto Home Screen.
+        if(state is AuthSuccessState){
+          Navigator.pushNamedAndRemoveUntil(context, HomeScreen.route,(r)=>false);
         }
       },
       child: Scaffold(
+
         resizeToAvoidBottomInset: false,
         body: Column(
           children: [
             Image.asset(
               AppAssets.ASSETS_WEBP_COSMIC_CLIFFS_WALLPAPER_WEBP,
-              height: context.height * .4,
+              height: context.height * .6,
               width: context.width,
               fit: BoxFit.cover,
             ),
@@ -75,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
             color: Theme
                 .of(context)
                 .scaffoldBackgroundColor,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
           ),
           padding: const EdgeInsets.all(20),
           duration: const Duration(milliseconds: 300),
@@ -102,11 +104,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 const Spacer(
                   flex: 4,
                 ),
-                BlocBuilder<LoginCubit, LoginState>(
+                BlocBuilder<AuthCubit, AuthState>(
                   builder: (context, state) {
                     return LoadingButton(
                       text: 'Login',
-                      loading: state is LoginLoadingsState,
+                      loading: state is AuthLoadingsState,
                       onPressed: onLogin,
                     );
                   },

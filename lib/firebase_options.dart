@@ -65,4 +65,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'chatos-app-0.appspot.com',
     iosBundleId: 'dev.nemr.chatos',
   );
+
 }
