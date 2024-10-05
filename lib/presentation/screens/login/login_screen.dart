@@ -1,4 +1,4 @@
-import 'package:chatos/business/auth_cubit.dart';
+import 'package:chatos/business/auth_cubit/auth_cubit.dart';
 import 'package:chatos/generated/app_assets.dart';
 import 'package:chatos/presentation/helpers/context_extension.dart';
 import 'package:chatos/presentation/helpers/validators/email_validator.dart';
@@ -21,12 +21,14 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  late final TextEditingController nameController;
   late final TextEditingController emailController;
   late final TextEditingController passwordController;
   final formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
+    nameController = TextEditingController();
     emailController = TextEditingController();
     passwordController = TextEditingController();
     super.initState();
@@ -34,6 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
+    nameController.dispose();
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
@@ -42,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
   onLogin() {
     if (formKey.currentState!.validate()) {
       AuthCubit.get(context)
-          .loginOrRegister(emailController.text, passwordController.text);
+          .loginOrRegister(emailController.text, passwordController.text,nameController.text);
     }
   }
 
@@ -64,14 +67,13 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             Image.asset(
               AppAssets.ASSETS_WEBP_COSMIC_CLIFFS_WALLPAPER_WEBP,
-              height: context.height * .6,
               width: context.width,
+              height: context.height*.6,
               fit: BoxFit.cover,
             ),
           ],
         ),
         bottomSheet: AnimatedContainer(
-          constraints: BoxConstraints(maxHeight: context.height * .8),
           height: (context.height * .6) + context.keyboardHeight,
           decoration: BoxDecoration(
             color: Theme
@@ -81,45 +83,50 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           padding: const EdgeInsets.all(20),
           duration: const Duration(milliseconds: 300),
-          child: Form(
-            key: formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Logo(),
-                const Spacer(),
-                CustomTextField(
-                  validator: emailValidator,
-                  hintText: 'Email Address',
-                  controller: emailController,
-                ),
-                const Spacer(),
-                CustomTextField(
-                  validator: passwordValidator,
-                  hintText: 'Password',
-                  controller: passwordController,
-                  action: TextInputAction.done,
-                  onSubmitted: onLogin,
-                ),
-                const Spacer(
-                  flex: 4,
-                ),
-                BlocBuilder<AuthCubit, AuthState>(
-                  builder: (context, state) {
-                    return LoadingButton(
-                      text: 'Login',
-                      loading: state is AuthLoadingsState,
-                      onPressed: onLogin,
-                    );
-                  },
-                ),
-                const Spacer(
-                  flex: 4,
-                ),
-                SizedBox(
-                  height: context.keyboardHeight,
-                )
-              ],
+          child: SingleChildScrollView(
+            child: Form(
+              key: formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 10,),
+                  const Logo(),
+                  const SizedBox(height: 10,),
+                  CustomTextField(
+                    validator: (_)=>null,
+                    hintText: 'Name (Enter Only If First-time)',
+                    controller: nameController,
+                  ),
+                  const SizedBox(height: 10,),
+                  CustomTextField(
+                    validator: emailValidator,
+                    hintText: 'Email Address*',
+                    controller: emailController,
+                  ),
+                  const SizedBox(height: 10,),
+                  CustomTextField(
+                    validator: passwordValidator,
+                    hintText: 'Password*',
+                    controller: passwordController,
+                    action: TextInputAction.done,
+                    onSubmitted: onLogin,
+                  ),
+                  const SizedBox(height: 40,),
+
+                  BlocBuilder<AuthCubit, AuthState>(
+                    builder: (context, state) {
+                      return LoadingButton(
+                        text: 'Login',
+                        loading: state is AuthLoadingsState,
+                        onPressed: onLogin,
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 40,),
+
+
+                ],
+              ),
             ),
           ),
         ),

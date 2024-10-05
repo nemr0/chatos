@@ -1,8 +1,6 @@
-import 'package:chatos/presentation/widgets/multiavatar_generator/multiavatar_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:multiavatar/multiavatar.dart';
-import 'dart:ui' as ui;
 class MultiAvatarGenerator extends StatelessWidget {
   const MultiAvatarGenerator({super.key, required this.code, this.side=40});
 final String code;

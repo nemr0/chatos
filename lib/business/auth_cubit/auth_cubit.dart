@@ -1,7 +1,7 @@
 import 'package:chatos/data/auth_service.dart';
+import 'package:chatos/data/notification_service.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,7 +17,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   /// login Or Register then save user data to Firestore.
   /// if user exist register fallbacks to login.
-  loginOrRegister(String email, String password) async {
+  loginOrRegister(String email, String password,String name) async {
     if (kDebugMode) print('---Login:\nemail: $email, password: $password');
     try {
       emit(AuthLoadingsState());
@@ -25,10 +25,8 @@ class AuthCubit extends Cubit<AuthState> {
       if (!notExist) {
         await auth.login(email, password);
       }
-
-      await auth.saveToken();
-      print('4');
-
+      await auth.updateUsername(name);
+      await NotificationService().saveToken();
       emit(AuthSuccessState());
     } catch (e) {
 
@@ -40,7 +38,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   signOut() async {
    await auth.signOut();
-   emit(AuthSignOutState());
+     emit(AuthSignOutState());
   }
 
   Future<bool> _register(String email, String password) async {

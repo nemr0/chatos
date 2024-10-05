@@ -1,3 +1,4 @@
+import 'package:chatos/presentation/helpers/context_extension.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -16,11 +17,11 @@ class CustomTextField extends StatelessWidget {
         onSubmitted?.call();
       } ,
       validator: validator,
-      style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer),
+      style: TextStyle(color: context.colorScheme.onPrimaryContainer),
       decoration: InputDecoration(
         hintText: hintText,
 
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(5),borderSide: BorderSide(color: Theme.of(context).colorScheme.primary))
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(5),borderSide: BorderSide(color: context.colorScheme.primary))
       ),
     );
   }

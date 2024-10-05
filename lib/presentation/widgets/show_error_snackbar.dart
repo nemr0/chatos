@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 showErrorSnackBar(BuildContext context, String message) {
   return ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+      backgroundColor: context.colorScheme.primaryContainer,
       behavior: SnackBarBehavior.floating,
       margin: EdgeInsets.only(
           bottom: MediaQuery.of(context).size.height - 150,
@@ -19,12 +19,12 @@ showErrorSnackBar(BuildContext context, String message) {
 
           children: [
             Icon(CupertinoIcons.triangle_fill,
-                color: Theme.of(context).colorScheme.primary),
+                color: context.colorScheme.primary),
             const SizedBox(width: 10,),
             Expanded(
               child: Text(
                 message,
-                style: TextStyle(color: Theme.of(context).colorScheme.primary),
+                style: TextStyle(color: context.colorScheme.primary),
                 overflow: TextOverflow.clip,
               ),
             ),

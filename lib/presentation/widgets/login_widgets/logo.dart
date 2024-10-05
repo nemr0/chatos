@@ -1,4 +1,5 @@
 import 'package:chatos/generated/app_assets.dart';
+import 'package:chatos/presentation/helpers/context_extension.dart';
 import 'package:flutter/material.dart';
 
 class Logo extends StatelessWidget {
@@ -12,10 +13,10 @@ class Logo extends StatelessWidget {
         Container(
             decoration: BoxDecoration(
             borderRadius: logoOnly?null:BorderRadius.circular(20),
-              color: logoOnly?null:Theme.of(context).colorScheme.onPrimaryContainer,
+              color: logoOnly?null:context.colorScheme.onPrimaryContainer,
             ),
             child: Image.asset(AppAssets.ASSETS_WEBP_LOGO_WEBP,height:side?? 100,width: side??100,)),
-         if(!logoOnly)Text('Chatos',style: TextStyle(fontSize: 16,color: Theme.of(context).colorScheme.primary),)
+         if(!logoOnly)Text('Chatos',style: TextStyle(fontSize: 16,color: context.colorScheme.primary),)
       ],
     );
   }
